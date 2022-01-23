@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - 3000:3000
+    environment:
+      NODE_ENV: production
+      MONGO_DB: mongodb://mongo:27017/calculator
+      JWT_SECRET: tRsrsT+.j?S+#\7(p!nNWPefYF"jBe)=,eKup>Juj>_n`2]Y[wr$S%pCSvLWgYXgCPMr/\:\{(^(F8LWzWy^#$G\4kS_Hq)BH!,fypuM':ab'sP{:e*tE<;7MUytMJCS
+      JWT_EXPIRES_IN: 3600000
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+    volumes:
+      - ./db/:/data/db
+
+networks: 
+    app-network:
+      driver: bridge
